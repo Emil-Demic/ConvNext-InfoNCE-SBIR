@@ -22,13 +22,13 @@ transforms = Compose([
             Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
-dataset_train = DatasetFSCOCO(args.root, mode="train", transforms_sketch=transforms, transforms_image=transforms)
-dataset_val = DatasetFSCOCO(args.root, mode="val", transforms_sketch=transforms, transforms_image=transforms)
+dataset_train = DatasetFSCOCO("fscoco", mode="train", transforms_sketch=transforms, transforms_image=transforms)
+dataset_val = DatasetFSCOCO("fscoco", mode="val", transforms_sketch=transforms, transforms_image=transforms)
 
 dataloader_train = DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True)
 dataloader_val = DataLoader(dataset_val, batch_size=args.batch_size * 3, shuffle=False)
 
-model = SbirModel(args.backbone)
+model = SbirModel(pretrained=True)
 if args.cuda:
     model.cuda()
 

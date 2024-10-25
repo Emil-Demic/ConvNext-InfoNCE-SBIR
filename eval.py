@@ -20,17 +20,17 @@ transforms = Compose([
             Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
-dataset_val = DatasetFSCOCO(args.root, mode="val", transforms_sketch=transforms, transforms_image=transforms)
+dataset_val = DatasetFSCOCO("fscoco", mode="val", transforms_sketch=transforms, transforms_image=transforms)
 
 dataloader_val = DataLoader(dataset_val, batch_size=args.batch_size * 3, shuffle=False)
 
-model = SbirModel(args.backbone)
+model = SbirModel(pretrained=False)
 if args.cuda:
     model.cuda()
 
 model_path = args.model_path
 if model_path == '':
-    if args.unseen:
+    if args.val_unseen:
         model_path = "models/model_unseen.pth"
     else:
         model_path = "models/model_normal.pth"
