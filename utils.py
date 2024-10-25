@@ -14,7 +14,7 @@ def seed_everything():
     if args.cuda:
         torch.cuda.manual_seed(args.seed)
         torch.backends.cudnn.benchmark = False
-        torch.use_deterministic_algorithms(True, warn_only=True)
+        torch.use_deterministic_algorithms(True, warn_only=False)
 
 
 def compute_view_specific_distance(sketch_feats, image_feats):

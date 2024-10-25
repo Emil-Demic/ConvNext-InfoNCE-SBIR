@@ -35,7 +35,7 @@ Place the downloaded pth file in models folder.
 
 ## Running the code
 
-You can train the model using *train.py* and evaluate the pretrained models using *eval.py*. \
+You can train the model using *train.py* and evaluate the pretrained models using *eval.py*. 
 
 ### Available command line arguments
 | Argument       | Description                             | Default  |

@@ -38,7 +38,8 @@ if model_path == '':
 if args.cuda:
     model.load_state_dict(torch.load(model_path, weights_only=True))
 else:
-    model.load_state_dict(torch.load(model_path, weights_only=True, map_location="cpu"))
+    model.load_state_dict(torch.load(model_path, weights_only=True, map_location=torch.device('cpu')))
+
 
 with torch.no_grad():
     model.eval()
