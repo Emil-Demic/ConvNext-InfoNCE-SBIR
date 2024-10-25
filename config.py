@@ -3,7 +3,7 @@ import torch
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--no-cuda', action='store_true', default=False,
+parser.add_argument('--no_cuda', action='store_true', default=False,
                     help='Disables CUDA training.')
 
 parser.add_argument('--save', action='store_true', default=False,
