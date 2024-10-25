@@ -51,9 +51,9 @@ def calculate_results(dist, file_names):
             top10 = top10 + 1
         tmp_line += output_html(i, rank[:10], file_names) + "\n"
     num = dist.shape[0]
-    print(f' top1: {str(top1 / float(num))} ({top1})')
-    print(f' top5: {str(top5 / float(num))} ({top5})')
-    print(f'top10: {str(top10 / float(num))} ({top10})')
+    print(f' top1: {top1 / float(num):.4f} ({top1})')
+    print(f' top5: {top5 / float(num):.4f} ({top5})')
+    print(f'top10: {top10 / float(num):.4f} ({top10})')
 
     html_content = """
        <html>
