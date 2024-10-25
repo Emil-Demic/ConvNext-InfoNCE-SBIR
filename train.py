@@ -91,6 +91,6 @@ for epoch in range(args.epochs):
                 best_top1 = top1
                 torch.save(model.state_dict(), f"E{epoch}_model.pth")
             no_improvement += 1
-            if no_improvement == 2:
+            if no_improvement == 4:
                 print("top10 metric has not improved for 2 epochs. Ending training.")
                 break
