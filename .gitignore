@@ -1,5 +1,6 @@
 /.idea
 /fscoco
 /__pycache__
-models/model_normal.pth
 result.html
+/models
+/streamlit-app/__pycache__
