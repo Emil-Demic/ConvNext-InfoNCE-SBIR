@@ -31,7 +31,14 @@ Place the downloaded pth file in models folder.
 
 ## Installation
 
-*TO DO*
+To install required libraries run:
+
+```
+pip install -r requirements.txt
+```
+This will install everything required to evaluate the model and run the streamlit application. \
+It will install cpu version of torch. If you want to use cuda install appropriate torch version separately.
+
 
 ## Running the code
 
@@ -55,4 +62,19 @@ When opened in a browser it will display the 10 most similar images to the sketc
 The correct image will have a red outline. If no image in a row has a red outline the correct image was not among \
 the first 10 most similar results.
 
+
+## Streamlit app
+To run the streamlit example app run the command inside the *streamlit-app* folder:
+```
+streamlit run app.py
+```
+In the sidebar you can select witch dataset to use: 
+- FSCOCO unseen (test set of FSCOCO dataset)
+- My Photos (a toy dataset of random personal photos replicating a somewhat realistic use case scenario on a tiny scale)
+
+
+The app uses the pretrained model trained on the unseen FSCOCO data split which need to be
+placed in the models folder for the app to work.\
+When you finish drawing the sketch on the canvas press the *search* button the app will show the 10 most 
+similar photos according to the model.
 
