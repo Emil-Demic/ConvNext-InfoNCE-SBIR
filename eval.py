@@ -13,10 +13,10 @@ from data import DatasetFSCOCO
 seed_everything()
 
 transforms = Compose([
-            RGB(),
             Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
             ToImage(),
             ToDtype(torch.float32, scale=True),
+            RGB(),
             Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
