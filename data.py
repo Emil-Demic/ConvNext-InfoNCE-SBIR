@@ -12,6 +12,8 @@ class DatasetFSCOCO(Dataset):
     def __init__(self, root, mode="train", transforms_sketch=None, transforms_image=None):
 
         self.root = root
+        self.front = False
+        self.amount = 0
 
         val_path = "val_unseen_user.txt" if args.val_unseen else "val_normal.txt"
         with open(os.path.join(self.root, val_path), 'r') as f:
@@ -35,17 +37,21 @@ class DatasetFSCOCO(Dataset):
     def __len__(self):
         return len(self.files)
 
-    def __getitem__(self, idx):
-        # sketch_path = os.path.join(self.root, "raw_data", self.files[idx][:-4] + ".json")
+    def update(self, skip_front, amount):
+        self.amount = amount
+        self.front = skip_front
 
-        sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx])
+    def __getitem__(self, idx):
+        sketch_path = os.path.join(self.root, "raw_data", self.files[idx][:-4] + ".json")
+
+        # sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx])
         image_path = os.path.join(self.root, "images", self.files[idx])
 
-        # sketch = json.load(open(sketch_path))
-        # sketch = drawPNG(sketch)
-        # sketch = Image.fromarray(sketch)
+        sketch = json.load(open(sketch_path))
+        sketch = drawPNG(sketch, skip_front=self.front, time_frac=self.amount)
+        sketch = Image.fromarray(sketch)
 
-        sketch = Image.open(sketch_path)
+        # sketch = Image.open(sketch_path)
         image = Image.open(image_path)
 
         if self.transforms_sketch:

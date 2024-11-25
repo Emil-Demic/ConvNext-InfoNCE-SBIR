@@ -1,3 +1,4 @@
+import numpy as np
 import tqdm
 import torch
 
@@ -41,23 +42,30 @@ else:
     model.load_state_dict(torch.load(model_path, weights_only=True, map_location=torch.device('cpu')))
 
 
-with torch.no_grad():
-    model.eval()
+out_file = open("RES.txt", "w")
+for skip_front in [True, False]:
+    for i in np.linspace(0, 0.5, 11):
+        with torch.no_grad():
+            dataset_val.update(skip_front, i)
+            model.eval()
 
-    sketch_output = []
-    image_output = []
-    for data in tqdm.tqdm(dataloader_val):
-        if args.cuda:
-            data = [d.cuda() for d in data]
+            sketch_output = []
+            image_output = []
+            for data in tqdm.tqdm(dataloader_val):
+                if args.cuda:
+                    data = [d.cuda() for d in data]
 
-        output = model(data)
-        sketch_output.append(output[0].cpu())
-        image_output.append(output[1].cpu())
+                output = model(data)
+                sketch_output.append(output[0].cpu())
+                image_output.append(output[1].cpu())
 
-    sketch_output = torch.concatenate(sketch_output)
-    image_output = torch.concatenate(image_output)
+            sketch_output = torch.concatenate(sketch_output)
+            image_output = torch.concatenate(image_output)
 
-    dis = compute_view_specific_distance(sketch_output.numpy(), image_output.numpy())
+            dis = compute_view_specific_distance(sketch_output.numpy(), image_output.numpy())
 
-    top1, top5, top10 = calculate_results(dis, dataset_val.get_file_names())
+            print(f"Front: {skip_front}, amount: {i}")
+            top1, top5, top10 = calculate_results(dis, dataset_val.get_file_names())
+            out_file.write(f"{top1}, {top5}, {top10}\n")
 
+out_file.close()
