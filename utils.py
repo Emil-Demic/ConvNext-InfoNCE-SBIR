@@ -1,10 +1,54 @@
 import os
 import random
+
+import cv2
 import numpy as np
 import scipy.spatial.distance as ssd
 import torch
+from bresenham import bresenham
 
 from config import args
+
+def drawPNG(sketch_data, side=256, time_frac=None, skip_front=False):
+    raster_image = np.ones((side, side), dtype=np.uint8)
+    prevX, prevY = None, None
+    start_time = sketch_data[0]['timestamp']
+    end_time = sketch_data[-1]['timestamp']
+
+    if time_frac:
+        if skip_front:
+            start_time += (end_time - start_time) * time_frac
+        else:
+            end_time -= (end_time - start_time) * time_frac
+
+    for points in sketch_data:
+        time = points['timestamp']
+        if not (start_time <= time <= end_time):
+            continue
+
+        x, y = map(float, points['coordinates'])
+        x = int(x * side)
+        y = int(y * side)
+        pen_state = list(map(int, points['pen_state']))
+        if not (prevX is None or prevY is None):
+            cordList = list(bresenham(prevX, prevY, x, y))
+            for cord in cordList:
+                if (cord[0] > 0 and cord[1] > 0) and (cord[0] < side and cord[1] < side):
+                    raster_image[cord[1], cord[0]] = 0
+            if pen_state == [0, 1, 0]:
+                prevX = x
+                prevY = y
+            elif pen_state == [1, 0, 0]:
+                prevX = None
+                prevY = None
+            else:
+                raise ValueError('pen_state not accounted for')
+        else:
+            prevX = x
+            prevY = y
+    # invert black and white pixels and dialate
+    raster_image = (1 - cv2.dilate(1 - raster_image, np.ones((3, 3), np.uint8), iterations=1)) * 255
+    return raster_image
 
 
 def seed_everything():
@@ -12,10 +56,6 @@ def seed_everything():
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
-    # if args.cuda:
-    #
-    #     torch.backends.cudnn.benchmark = False
-    #     torch.use_deterministic_algorithms(True, warn_only=False)
 
 
 def compute_view_specific_distance(sketch_feats, image_feats):
