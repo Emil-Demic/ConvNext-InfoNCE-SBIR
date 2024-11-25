@@ -36,16 +36,16 @@ class DatasetFSCOCO(Dataset):
         return len(self.files)
 
     def __getitem__(self, idx):
-        sketch_path = os.path.join(self.root, "raw_data", self.files[idx][:-4] + ".json")
+        # sketch_path = os.path.join(self.root, "raw_data", self.files[idx][:-4] + ".json")
 
-        # sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx])
+        sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx])
         image_path = os.path.join(self.root, "images", self.files[idx])
 
-        sketch = json.load(open(sketch_path))
-        sketch = drawPNG(sketch)
-        sketch = Image.fromarray(sketch)
+        # sketch = json.load(open(sketch_path))
+        # sketch = drawPNG(sketch)
+        # sketch = Image.fromarray(sketch)
 
-        # sketch = Image.open(sketch_path)
+        sketch = Image.open(sketch_path)
         image = Image.open(image_path)
 
         if self.transforms_sketch:
