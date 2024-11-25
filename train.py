@@ -3,6 +3,7 @@ import torch
 
 from info_nce import InfoNCE
 from torch.optim import Adam
+from torch.optim.lr_scheduler import StepLR
 from torch.utils.data import DataLoader
 from torchvision.transforms.v2 import Resize, Normalize, Compose, ToImage, ToDtype, RGB
 from torchvision.transforms import InterpolationMode
@@ -33,7 +34,7 @@ if args.cuda:
     model.cuda()
 
 optimizer = Adam(model.parameters(), lr=args.lr)
-
+scheduler = StepLR(optimizer, step_size=6, gamma=0.1)
 loss_fn = InfoNCE(negative_mode="unpaired", temperature=args.temp)
 
 best_res = 0
@@ -58,6 +59,8 @@ for epoch in range(args.epochs):
         if i % 5 == 4:
             print(f'[{epoch:03d}, {i:03d}] loss: {running_loss / 5  :0.5f}')
             running_loss = 0.0
+
+    scheduler.step()
 
     with torch.no_grad():
         model.eval()
