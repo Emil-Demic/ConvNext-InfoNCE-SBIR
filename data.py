@@ -48,7 +48,8 @@ class DatasetFSCOCO(Dataset):
         image_path = os.path.join(self.root, "images", self.files[idx])
 
         sketch = json.load(open(sketch_path))
-        sketch = drawPNG(sketch, skip_front=self.front, time_frac=self.amount)
+        # sketch = drawPNG(sketch, skip_front=self.front, time_frac=self.amount)
+        sketch = drawPNG(sketch)
         sketch = Image.fromarray(sketch)
 
         # sketch = Image.open(sketch_path)
