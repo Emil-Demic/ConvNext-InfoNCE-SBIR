@@ -3,7 +3,7 @@ import tqdm
 import torch
 
 from torch.utils.data import DataLoader
-from torchvision.transforms.v2 import Resize, Normalize, Compose, ToImage, ToDtype, RGB
+from torchvision.transforms.v2 import Resize, Normalize, Compose, ToImage, ToDtype, RGB, RandomCrop
 from torchvision.transforms import InterpolationMode
 
 from config import args
@@ -14,7 +14,8 @@ from data import DatasetFSCOCO
 seed_everything()
 
 transforms = Compose([
-            Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
+            # Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
+            RandomCrop((224, 224)),
             ToImage(),
             ToDtype(torch.float32, scale=True),
             RGB(),
