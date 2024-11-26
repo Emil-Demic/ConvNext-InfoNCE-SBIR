@@ -14,7 +14,14 @@ from data import DatasetFSCOCO
 seed_everything()
 
 transforms = Compose([
-            # Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
+            Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
+            ToImage(),
+            ToDtype(torch.float32, scale=True),
+            RGB(),
+            Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+
+transforms_sketch = Compose([
             RandomCrop((224, 224)),
             ToImage(),
             ToDtype(torch.float32, scale=True),
@@ -22,7 +29,7 @@ transforms = Compose([
             Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
-dataset_val = DatasetFSCOCO("fscoco", mode="val", transforms_sketch=transforms, transforms_image=transforms)
+dataset_val = DatasetFSCOCO("fscoco", mode="val", transforms_sketch=transforms_sketch, transforms_image=transforms)
 
 dataloader_val = DataLoader(dataset_val, batch_size=args.batch_size * 3, shuffle=False)
 
