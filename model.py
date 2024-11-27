@@ -1,20 +1,20 @@
 import torch.nn.functional as F
 
 from torch import nn
-from torch.nn import AdaptiveAvgPool2d, AdaptiveMaxPool2d
-from torchvision.models import convnext_small, vgg16
+from torch.nn import AdaptiveAvgPool2d
+from torchvision.models import convnext_small
 
 
 class SbirModel(nn.Module):
     def __init__(self, pretrained=True):
         super(SbirModel, self).__init__()
         if pretrained:
-            from torchvision.models import VGG16_Weights
-            self.embedding_net = vgg16(weights=VGG16_Weights.DEFAULT).features
+            from torchvision.models import ConvNeXt_Small_Weights
+            self.embedding_net = convnext_small(weights=ConvNeXt_Small_Weights.DEFAULT).features
         else:
-            self.embedding_net = vgg16().features
-        self.num_features = 512
-        self.pool = AdaptiveMaxPool2d(1)
+            self.embedding_net = convnext_small().features
+        self.num_features = 768
+        self.pool = AdaptiveAvgPool2d(1)
 
     def forward(self, data):
         res1 = self.embedding_net(data[0])
