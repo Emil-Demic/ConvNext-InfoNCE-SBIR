@@ -2,7 +2,6 @@ import tqdm
 import torch
 
 from info_nce import InfoNCE
-from torch.nn import TripletMarginLoss
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from torchvision.transforms.v2 import Resize, Normalize, Compose, ToImage, ToDtype, RGB
@@ -35,8 +34,7 @@ if args.cuda:
 
 optimizer = Adam(model.parameters(), lr=args.lr)
 
-loss_fn = TripletMarginLoss(margin=0.2)
-# loss_fn = InfoNCE(negative_mode="unpaired", temperature=args.temp)
+loss_fn = InfoNCE(negative_mode="unpaired", temperature=args.temp)
 
 best_res = 0
 best_top1 = 0
@@ -50,8 +48,7 @@ for epoch in range(args.epochs):
 
         output = model(data)
 
-        negative = torch.vstack((output[1][1:], output[1][0]))
-        loss = loss_fn(output[0], output[1], negative)
+        loss = loss_fn(output[0], output[1])
 
         running_loss += loss.item()
         loss.backward()
