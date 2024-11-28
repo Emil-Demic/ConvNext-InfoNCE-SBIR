@@ -1,6 +1,6 @@
 import os
 
-from PIL import Image, ImageOps
+from PIL import Image
 from torch.utils.data import Dataset
 
 from config import args
@@ -38,8 +38,7 @@ class DatasetFSCOCO(Dataset):
         image_path = os.path.join(self.root, "images", self.files[idx])
 
         sketch = Image.open(sketch_path)
-        image = Image.open(image_path).convert('RGB')
-        image = ImageOps.pad(image, size=(224, 224))
+        image = Image.open(image_path)
 
         if self.transforms_sketch:
             sketch = self.transforms_sketch(sketch)
