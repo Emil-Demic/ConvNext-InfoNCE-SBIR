@@ -4,3 +4,6 @@
 result.html
 /models
 /streamlit-app/__pycache__
+tmp.py
+res_draw.csv
+res_jpg.csv
