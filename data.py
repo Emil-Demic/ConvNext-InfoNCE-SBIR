@@ -1,15 +1,19 @@
+import json
 import os
 
 from PIL import Image
 from torch.utils.data import Dataset
 
 from config import args
+from utils import drawPNG
 
 
 class DatasetFSCOCO(Dataset):
     def __init__(self, root, mode="train", transforms_sketch=None, transforms_image=None):
 
         self.root = root
+        self.skip_front = False
+        self.amount = None
 
         val_path = "val_unseen_user.txt" if args.val_unseen else "val_normal.txt"
         with open(os.path.join(self.root, val_path), 'r') as f:
@@ -33,11 +37,21 @@ class DatasetFSCOCO(Dataset):
     def __len__(self):
         return len(self.files)
 
+    def update(self, skip_front, amount):
+        self.skip_front = skip_front
+        self.amount = amount
+
     def __getitem__(self, idx):
-        sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx])
+        sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx][:-4] + ".json")
+
+        # sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx])
         image_path = os.path.join(self.root, "images", self.files[idx])
 
-        sketch = Image.open(sketch_path)
+        sketch = json.load(open(sketch_path))
+        sketch = drawPNG(sketch, time_frac=self.amount, skip_front=self.skip_front)
+        sketch = Image.fromarray(sketch)
+
+        # sketch = Image.open(sketch_path)
         image = Image.open(image_path)
 
         if self.transforms_sketch:
