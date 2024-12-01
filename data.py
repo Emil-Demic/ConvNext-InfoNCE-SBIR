@@ -42,7 +42,7 @@ class DatasetFSCOCO(Dataset):
         self.amount = amount
 
     def __getitem__(self, idx):
-        sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx][:-4] + ".json")
+        sketch_path = os.path.join(self.root, "raw_data", self.files[idx][:-4] + ".json")
 
         # sketch_path = os.path.join(self.root, "raster_sketches", self.files[idx])
         image_path = os.path.join(self.root, "images", self.files[idx])
