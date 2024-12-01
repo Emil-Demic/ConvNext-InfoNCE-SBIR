@@ -64,5 +64,8 @@ for skip_front in [True, False]:
 
             dis = compute_view_specific_distance(sketch_output.numpy(), image_output.numpy())
 
+            print(f"Front: {skip_front}, amount: {i}")
             top1, top5, top10 = calculate_results(dis, dataset_val.get_file_names())
+            out_file.write(f"{top1}, {top5}, {top10}\n")
 
+out_file.close()
