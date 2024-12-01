@@ -43,8 +43,8 @@ else:
 
 
 out_file = open("RES.txt", "w")
-for skip_front in [True, False]:
-    for i in np.linspace(0, 0.5, 11):
+for skip_front in [False]:
+    for i in np.linspace(0.5, 1.0, 11):
         with torch.no_grad():
             dataset_val.update(skip_front, i)
             model.eval()
