@@ -20,16 +20,20 @@ def find_similar_embeddings(query_embedding, gallery_embeddings, top_k=10):
 
 
 def init_model_transforms():
+    """
+    Change the path to the pretrained model you wish to use. By default, the model trained
+    on the unseen user train/test split is used
+    """
     model = SbirModel(pretrained=False)
     model.load_state_dict(torch.load('../models/model_unseen.pth', map_location=torch.device('cpu'), weights_only=True))
     model.eval()
 
     transforms = Compose([
-        RGB(),
-        Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
-        ToImage(),
-        ToDtype(torch.float32, scale=True),
-        Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
+            Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
+            ToImage(),
+            ToDtype(torch.float32, scale=True),
+            RGB(),
+            Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
 
     return model, transforms

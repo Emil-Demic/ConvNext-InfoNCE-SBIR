@@ -65,7 +65,7 @@ if generate_embedding:
             img_tensor = transforms(img).unsqueeze(0)
 
             with torch.no_grad():
-                query_embedding = model.get_embedding(img_tensor).numpy()
+                query_embedding = model(img_tensor).numpy()
 
             top_k_indices = find_similar_embeddings(query_embedding, gallery_embeddings, top_k=10)
 
