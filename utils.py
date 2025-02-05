@@ -4,7 +4,21 @@ import numpy as np
 import scipy.spatial.distance as ssd
 import torch
 
+from torchvision.transforms.v2 import Resize, Normalize, Compose, ToImage, ToDtype, RGB
+from torchvision.transforms import InterpolationMode
+
 from config import args
+
+
+def create_transforms():
+    transforms = Compose([
+            Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
+            ToImage(),
+            ToDtype(torch.float32, scale=True),
+            RGB(),
+            Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+    return transforms
 
 
 def seed_everything():

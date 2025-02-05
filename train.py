@@ -4,23 +4,15 @@ import torch
 from info_nce import InfoNCE
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from torchvision.transforms.v2 import Resize, Normalize, Compose, ToImage, ToDtype, RGB
-from torchvision.transforms import InterpolationMode
 
 from config import args
 from model import SbirModel
-from utils import compute_view_specific_distance, calculate_results, seed_everything
+from utils import compute_view_specific_distance, calculate_results, seed_everything, create_transforms
 from data import DatasetFSCOCO
 
 seed_everything()
 
-transforms = Compose([
-            Resize((224, 224), interpolation=InterpolationMode.BILINEAR),
-            ToImage(),
-            ToDtype(torch.float32, scale=True),
-            RGB(),
-            Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ])
+transforms = create_transforms()
 
 dataset_train = DatasetFSCOCO("fscoco", mode="train", transforms_sketch=transforms, transforms_image=transforms)
 dataset_val = DatasetFSCOCO("fscoco", mode="val", transforms_sketch=transforms, transforms_image=transforms)
@@ -36,9 +28,6 @@ optimizer = Adam(model.parameters(), lr=args.lr)
 
 loss_fn = InfoNCE(negative_mode="unpaired", temperature=args.temp)
 
-best_res = 0
-best_top1 = 0
-no_improvement = 0
 for epoch in range(args.epochs):
     model.train()
     running_loss = 0.0
@@ -80,17 +69,6 @@ for epoch in range(args.epochs):
         print(f"EPOCH {str(epoch)}:")
         top1, top5, top10 = calculate_results(dis, dataset_val.get_file_names())
 
-        if top10 > best_res:
-            no_improvement = 0
-            best_res = top10
-            best_top1 = top1
-            if args.save:
-                torch.save(model.state_dict(), f"E{epoch}_model.pth")
-        else:
-            if args.save and top1 > best_top1 and top10 == best_res:
-                best_top1 = top1
-                torch.save(model.state_dict(), f"E{epoch}_model.pth")
-            no_improvement += 1
-            if no_improvement == 4:
-                print("top10 metric has not improved for 2 epochs. Ending training.")
-                break
+        if args.save:
+            torch.save(model.state_dict(), f"E{epoch}_model.pth")
+
