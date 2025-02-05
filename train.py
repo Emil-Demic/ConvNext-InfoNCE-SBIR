@@ -35,9 +35,10 @@ for epoch in range(args.epochs):
         if args.cuda:
             data = [d.cuda() for d in data]
 
-        output = model(data)
+        output1 = model(data[0])
+        output2 = model(data[1])
 
-        loss = loss_fn(output[0], output[1])
+        loss = loss_fn(output1, output2)
 
         running_loss += loss.item()
         loss.backward()
@@ -57,9 +58,11 @@ for epoch in range(args.epochs):
             if args.cuda:
                 data = [d.cuda() for d in data]
 
-            output = model(data)
-            sketch_output.append(output[0].cpu())
-            image_output.append(output[1].cpu())
+            output1 = model(data[0])
+            output2 = model(data[1])
+
+            sketch_output.append(output1.cpu())
+            image_output.append(output2.cpu())
 
         sketch_output = torch.concatenate(sketch_output)
         image_output = torch.concatenate(image_output)
