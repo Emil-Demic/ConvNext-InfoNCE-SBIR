@@ -26,7 +26,7 @@ with torch.no_grad():
         img = Image.open(file)
         img = ImageOps.exif_transpose(img)
         img = transforms(img).unsqueeze(0)
-        embeddings.append(model.get_embedding(img).numpy()[0])
+        embeddings.append(model(img).numpy()[0])
 
 elapsed_time = time.time() - start_time
 print("Time: ", elapsed_time)
