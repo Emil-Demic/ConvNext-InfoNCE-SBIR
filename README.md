@@ -8,8 +8,12 @@ You can download the dataset from the official [FSCOCO website](https://fscoco.g
 Place the extracted dataset inside the folder.
 ## Pretrained models
 You can download the pretrained model for both train/test splits on FSCOC:
-- [Normal split](https://drive.google.com/file/d/14RxTcdbueG7j5RnGtYMko7dp4vP7qoOy/view?usp=sharing)
-- [Unseen split](https://drive.google.com/file/d/1mKj0B8a4hvxQga6dQkONbdvI84Jo6Qy-/view?usp=sharing) 
+- [Normal split](https://drive.google.com/file/d/1-5SpB2leTu94aEbNH3nqJ8zXr8LPn8P7/view?usp=sharing)
+- [Unseen split](https://drive.google.com/file/d/1-QBHl_-69NcBqtxgE4XGawUrW3Vq7u_w/view?usp=sharing)
+
+A model trained on the entire FSCOCO dataset is also available for download,
+intended for use in experiments with other datasets:
+- [Full dataset](https://drive.google.com/file/d/1bothsxqYq2wODBZEiv-HCC2cMa3hGGaM/view?usp=sharing)
 
 Place the downloaded pth file in models folder.
 
