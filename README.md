@@ -66,6 +66,8 @@ When opened in a browser it will display the 10 most similar images to the sketc
 The correct image will have a red outline. If no image in a row has a red outline the correct image was not among \
 the first 10 most similar results.
 
+## Web app
+The application showcasing the model's practical implementation is available [online](https://staging.d3g394a9xcj50z.amplifyapp.com/), with its code hosted in a separate [repository](https://github.com/Emil-Demic/SBIR-frontend).
 
 ## Streamlit app
 To run the streamlit example app run the command inside the *streamlit-app* folder:
