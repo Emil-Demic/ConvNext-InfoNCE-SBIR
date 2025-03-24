@@ -67,7 +67,7 @@ The correct image will have a red outline. If no image in a row has a red outlin
 the first 10 most similar results.
 
 ## Web app
-The application showcasing the model's practical implementation is available [online](https://staging.d3g394a9xcj50z.amplifyapp.com/), with its code hosted in a separate [repository](https://github.com/Emil-Demic/SBIR-frontend).
+The application showcasing the model's practical implementation is available [online](https://staging.d3g394a9xcj50z.amplifyapp.com/), with its code hosted in a separate [repository](https://github.com/Emil-Demic/SBIR-application).
 
 ## Streamlit app
 To run the streamlit example app run the command inside the *streamlit-app* folder:
