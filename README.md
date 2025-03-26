@@ -3,6 +3,10 @@
 Implementation of a simple model for sketch based image retrieval using a siamese network with ConvNext Small as the encoder
 and trained with InfoNCE loss.
 
+Additional details and evaluation of the model are available in::
+- Research paper: Coming soon
+- [Diploma thesis (only in Slovene)](https://repozitorij.uni-lj.si/IzpisGradiva.php?id=167773&lang=slv)
+
 ## FSCOCO dataset
 You can download the dataset from the official [FSCOCO website](https://fscoco.github.io).
 Place the extracted dataset inside the folder.
